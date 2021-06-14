@@ -111,6 +111,7 @@ class BookController extends Controller
                     "authors" => $authorArray,
                     "number_of_pages" => $number_of_pages,
                     "publisher" => $publisher,
+                    "country" => $country,
                     "release_date" => $release_date
                 )
             )
@@ -121,22 +122,109 @@ class BookController extends Controller
 
     }
 
-    function read(){
-        $books = Book::all();
-        if ($books == '[]'){
+    function read(Request $request){
+        //SEARCH BY NAME
+        if($request->query('name')){
+            $name = $request->query('name');
+            $books = Book::where("name", $name)->get();
+            if ($books == '[]'){
+                $jsonRes = array(
+                    "status_code" => 200,
+                    "status" => "success",
+                    "data" => []
+                );
+                return response()->json($jsonRes, 200);
+            }
+    
             $jsonRes = array(
                 "status_code" => 200,
                 "status" => "success",
-                "data" => []
+                "data" => $books
             );
             return response()->json($jsonRes, 200);
         }
 
-        $jsonRes = array(
-            "status_code" => 200,
-            "status" => "success",
-            "data" => $books
-        );
-        return response()->json($jsonRes, 200);
+        //SEARCH BY COUNTRY
+        if($request->query('country')){
+            $country = $request->query('country');
+            $books = Book::where("country", $country)->get();
+            if ($books == '[]'){
+                $jsonRes = array(
+                    "status_code" => 200,
+                    "status" => "success",
+                    "data" => []
+                );
+                return response()->json($jsonRes, 200);
+            }
+    
+            $jsonRes = array(
+                "status_code" => 200,
+                "status" => "success",
+                "data" => $books
+            );
+            return response()->json($jsonRes, 200);
+        }
+
+         //SEARCH BY PUBLISHER
+         if($request->query('publisher')){
+            $publisher = $request->query('publisher');
+            $books = Book::where("publisher", $publisher)->get();
+            if ($books == '[]'){
+                $jsonRes = array(
+                    "status_code" => 200,
+                    "status" => "success",
+                    "data" => []
+                );
+                return response()->json($jsonRes, 200);
+            }
+    
+            $jsonRes = array(
+                "status_code" => 200,
+                "status" => "success",
+                "data" => $books
+            );
+            return response()->json($jsonRes, 200);
+        }
+
+        //SEARCH BY RELEASE YEAR
+        if($request->query('release_year')){
+            $releaseYear = $request->query('release_year');
+            //Cast $releaseYear to integer
+            $intYear = (int)$releaseYear;
+            $books = Book::select('Select * from books where year(columnX) = 2010');
+            $books = Book::where("publisher", $publisher)->get();
+            if ($books == '[]'){
+                $jsonRes = array(
+                    "status_code" => 200,
+                    "status" => "success",
+                    "data" => []
+                );
+                return response()->json($jsonRes, 200);
+            }
+    
+            $jsonRes = array(
+                "status_code" => 200,
+                "status" => "success",
+                "data" => $books
+            );
+            return response()->json($jsonRes, 200);
+        }
+
+        // $books = Book::all();
+        // if ($books == '[]'){
+        //     $jsonRes = array(
+        //         "status_code" => 200,
+        //         "status" => "success",
+        //         "data" => []
+        //     );
+        //     return response()->json($jsonRes, 200);
+        // }
+
+        // $jsonRes = array(
+        //     "status_code" => 200,
+        //     "status" => "success",
+        //     "data" => $books
+        // );
+        // return response()->json($jsonRes, 200);
     }
 }
