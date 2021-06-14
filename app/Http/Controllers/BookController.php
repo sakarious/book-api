@@ -144,6 +144,7 @@ class BookController extends Controller
             return response()->json($jsonRes, 200);
         }
 
+
         //SEARCH BY COUNTRY
         if($request->query('country')){
             $country = $request->query('country');
@@ -191,8 +192,7 @@ class BookController extends Controller
             $releaseYear = $request->query('release_year');
             //Cast $releaseYear to integer
             $intYear = (int)$releaseYear;
-            $books = Book::select('Select * from books where year(columnX) = 2010');
-            $books = Book::where("publisher", $publisher)->get();
+            $books = Book::whereYear('release_date', '=', $intYear)->get();
             if ($books == '[]'){
                 $jsonRes = array(
                     "status_code" => 200,
@@ -210,21 +210,21 @@ class BookController extends Controller
             return response()->json($jsonRes, 200);
         }
 
-        // $books = Book::all();
-        // if ($books == '[]'){
-        //     $jsonRes = array(
-        //         "status_code" => 200,
-        //         "status" => "success",
-        //         "data" => []
-        //     );
-        //     return response()->json($jsonRes, 200);
-        // }
+        $books = Book::all();
+        if ($books == '[]'){
+            $jsonRes = array(
+                "status_code" => 200,
+                "status" => "success",
+                "data" => []
+            );
+            return response()->json($jsonRes, 200);
+        }
 
-        // $jsonRes = array(
-        //     "status_code" => 200,
-        //     "status" => "success",
-        //     "data" => $books
-        // );
-        // return response()->json($jsonRes, 200);
+        $jsonRes = array(
+            "status_code" => 200,
+            "status" => "success",
+            "data" => $books
+        );
+        return response()->json($jsonRes, 200);
     }
 }
