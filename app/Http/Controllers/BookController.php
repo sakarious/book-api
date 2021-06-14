@@ -28,7 +28,6 @@ class BookController extends Controller
 
         $response = Http::get("https://www.anapioficeandfire.com/api/books?name={$name}");
 
-        // return "https://www.anapioficeandfire.com/api/books?name={$name}";
         if($response ==  "[]"){
             $jsonRes = [
                 "status_code" => 200,
@@ -58,6 +57,66 @@ class BookController extends Controller
 
     //Create Book
     function create(Request $request){
-        return "Good";
+        //Set Validation Rules
+        // name
+        // isbn
+        // authors 
+        // country
+        // number_of_pages
+        // publisher
+        // release_date
+
+        $rules = [
+            'name' => "required",
+            'isbn' => "required",
+            'authors' => "required",
+            'country' => "required",
+            'number_of_pages' => "required",
+            'publisher' => "required",
+            'release_date' => "required",
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails()){
+            return $validator->errors();
+        }
+
+        $name = $request->input('name');
+        $isbn = $request->input('isbn');
+        $authors = $request->input('authors');
+        $country = $request->input('country');
+        $number_of_pages = $request->input('number_of_pages');
+        $publisher = $request->input('publisher');
+        $release_date = $request->input('release_date');
+
+        Book::insert([
+            'name' => $name,
+            'isbn' => $isbn,
+            'authors' => $authors,
+            'country' => $country,
+            'number_of_pages' => $number_of_pages,
+            'publisher' => $publisher,
+            'release_date' => $release_date
+        ]);
+
+        $jsonRes = array(
+            "status_code" => 201,
+            "status" => "success",
+            "data" => array(
+                "book" => array(
+                    "name" => $name,
+                    "isbn" => $isbn,
+                    "authors" => $authors,
+                    "number_of_pages" => $number_of_pages,
+                    "publisher" => $publisher,
+                    "release_date" => $release_date
+                )
+            )
+
+        );
+
+        return response()->json($jsonRes, 201);
+
     }
 }
