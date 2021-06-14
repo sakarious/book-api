@@ -55,4 +55,9 @@ class BookController extends Controller
 
         return response()->json($jsonRes, 200);
     }
+
+    //Create Book
+    function create(Request $request){
+        return "Good";
+    }
 }

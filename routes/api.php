@@ -20,3 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/external-books', [BookController::class, 'index']);
+
+Route::group(['prefix' => 'v1'], function(){
+    // ------------------Create New Book ------------------------------
+      Route::post('/books',[BookController::class, 'create']);
+
+});
