@@ -85,15 +85,16 @@ class BookController extends Controller
         $name = $request->input('name');
         $isbn = $request->input('isbn');
         $authors = $request->input('authors');
+        $authorArray = explode(",",$authors);
         $country = $request->input('country');
         $number_of_pages = $request->input('number_of_pages');
         $publisher = $request->input('publisher');
         $release_date = $request->input('release_date');
 
-        Book::insert([
+        Book::create([
             'name' => $name,
             'isbn' => $isbn,
-            'authors' => $authors,
+            'authors' => $authorArray,
             'country' => $country,
             'number_of_pages' => $number_of_pages,
             'publisher' => $publisher,
@@ -107,7 +108,7 @@ class BookController extends Controller
                 "book" => array(
                     "name" => $name,
                     "isbn" => $isbn,
-                    "authors" => $authors,
+                    "authors" => $authorArray,
                     "number_of_pages" => $number_of_pages,
                     "publisher" => $publisher,
                     "release_date" => $release_date
@@ -118,5 +119,24 @@ class BookController extends Controller
 
         return response()->json($jsonRes, 201);
 
+    }
+
+    function read(){
+        $books = Book::all();
+        if ($books == '[]'){
+            $jsonRes = array(
+                "status_code" => 200,
+                "status" => "success",
+                "data" => []
+            );
+            return response()->json($jsonRes, 200);
+        }
+
+        $jsonRes = array(
+            "status_code" => 200,
+            "status" => "success",
+            "data" => $books
+        );
+        return response()->json($jsonRes, 200);
     }
 }
