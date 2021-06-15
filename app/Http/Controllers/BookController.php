@@ -262,30 +262,65 @@ class BookController extends Controller
         $publisher = $request->input('publisher');
         $release_date = $request->input('release_date');
 
-        Book::find($id)->update([
-            'name' => $name,
-            'isbn' => $isbn,
-            'authors' => $authorArray,
-            'country' => $country,
-            'number_of_pages' => $number_of_pages,
-            'publisher' => $publisher,
-            'release_date' => $release_date
-        ]);
+        $checkBook = Book::find($id);
+        
+        if ($checkBook){
+                $checkBook->name = $name;
+                $checkBook->isbn = $isbn;
+                $checkBook->authors = $authorArray;
+                $checkBook->country = $country;
+                $checkBook->number_of_pages = $number_of_pages;
+                $checkBook->publisher = $publisher;
+                $checkBook->release_date = $release_date;
+                $saved = $checkBook->save();
+                
+                if($saved) {
+                    $book = Book::find($id);
 
-        $book = Book::find($id);
+                    $jsonRes = array(
+                        "status_code" => 200,
+                        "status" => "success",
+                        "message" => "The book $book->name was updated successfully",
+                        "data" => $book
+                    );
+
+                    return response()->json($jsonRes, 200);
+                }
+        }
 
         $jsonRes = array(
             "status_code" => 200,
             "status" => "success",
-            "message" => "The book $book->name was updated successfully",
-            "data" => $book
+            "message" => "Book not Found",
+            "data" => []
         );
-
         return response()->json($jsonRes, 200);
-
     }
 
     function delete($id){
-        return "Delete $id";
+        $checkBook = Book::find($id);
+
+        if ($checkBook){
+            $deleted = $checkBook->delete();
+
+            if($deleted){
+                $jsonRes = array(
+                    "status_code" => 204,
+                    "status" => "success",
+                    "message" => "The book ‘My first book’ was deleted successfully",
+                    "data" => []
+                );
+
+                return response()->json($jsonRes, 200);
+            }
+        }
+
+        $jsonRes = array(
+            "status_code" => 200,
+            "status" => "success",
+            "message" => "Book not Found",
+            "data" => []
+        );
+        return response()->json($jsonRes, 200);
     }
 }
