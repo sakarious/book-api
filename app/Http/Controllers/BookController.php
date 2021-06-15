@@ -227,4 +227,65 @@ class BookController extends Controller
         );
         return response()->json($jsonRes, 200);
     }
+
+    function update(Request $request, $id){
+        // name
+        // isbn
+        // authors 
+        // country
+        // number_of_pages
+        // publisher
+        // release_date
+
+        $rules = [
+            'name' => "required",
+            'isbn' => "required",
+            'authors' => "required",
+            'country' => "required",
+            'number_of_pages' => "required",
+            'publisher' => "required",
+            'release_date' => "required",
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails()){
+            return $validator->errors();
+        }
+
+        $name = $request->input('name');
+        $isbn = $request->input('isbn');
+        $authors = $request->input('authors');
+        $authorArray = explode(",",$authors);
+        $country = $request->input('country');
+        $number_of_pages = $request->input('number_of_pages');
+        $publisher = $request->input('publisher');
+        $release_date = $request->input('release_date');
+
+        Book::find($id)->update([
+            'name' => $name,
+            'isbn' => $isbn,
+            'authors' => $authorArray,
+            'country' => $country,
+            'number_of_pages' => $number_of_pages,
+            'publisher' => $publisher,
+            'release_date' => $release_date
+        ]);
+
+        $book = Book::find($id);
+
+        $jsonRes = array(
+            "status_code" => 200,
+            "status" => "success",
+            "message" => "The book $book->name was updated successfully",
+            "data" => $book
+        );
+
+        return response()->json($jsonRes, 200);
+
+    }
+
+    function delete($id){
+        return "Delete $id";
+    }
 }
