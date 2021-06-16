@@ -23,6 +23,7 @@ class BookFactory extends Factory
     {
         return [
             // Fake Data
+            'id' => 1,
             'name' => 'Sakarious',
             'isbn' => '123-432-21',
             'authors' => 'Sakarious', 'Da Genius',
