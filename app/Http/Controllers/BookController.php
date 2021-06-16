@@ -21,7 +21,11 @@ class BookController extends Controller
         ]);
 
         if($validator->fails()){
-            return $validator->errors();
+            $jsonRes = [
+                "message" => "Validation Failed",
+                "errors" => $validator->errors()
+            ];
+            return response()->json($jsonRes, 200);
         }
         
         $name = $request->query('name');
@@ -79,7 +83,11 @@ class BookController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()){
-            return $validator->errors();
+            $jsonRes = [
+                "message" => "Validation Failed",
+                "errors" => $validator->errors()
+            ];
+            return response()->json($jsonRes, 200);
         }
 
         $name = $request->input('name');
@@ -250,7 +258,11 @@ class BookController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()){
-            return $validator->errors();
+            $jsonRes = [
+                "message" => "Validation Failed",
+                "errors" => $validator->errors()
+            ];
+            return response()->json($jsonRes, 200);
         }
 
         $name = $request->input('name');
@@ -321,6 +333,28 @@ class BookController extends Controller
             "message" => "Book not Found",
             "data" => []
         );
+        return response()->json($jsonRes, 200);
+    }
+
+    function show($id){
+        $book = Book::find($id);
+
+        if($book){
+            $jsonRes = array(
+                "status_code" => 200,
+                "status" => "success",
+                "data" => $book
+            );
+            return response()->json($jsonRes, 200);
+        }
+
+        $jsonRes = array(
+            "status_code" => 200,
+            "status" => "success",
+            "message" => "Book not Found",
+            "data" => []
+        );
+
         return response()->json($jsonRes, 200);
     }
 }
