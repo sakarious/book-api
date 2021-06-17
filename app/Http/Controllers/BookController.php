@@ -356,9 +356,10 @@ class BookController extends Controller
 
     //DELETE BOOK
     function delete($id){
-
+        //Find book by id given
         $checkBook = Book::find($id);
 
+        //if book is found, delete book and send appropriate json response
         if ($checkBook){
             $deleted = $checkBook->delete();
 
@@ -374,6 +375,7 @@ class BookController extends Controller
             }
         }
 
+        //if book is not found, send appropriate response
         $jsonRes = array(
             "status_code" => 200,
             "status" => "success",
@@ -383,9 +385,12 @@ class BookController extends Controller
         return response()->json($jsonRes, 200);
     }
 
+    //SHOW BOOK
     function show($id){
+        //Find book by id given
         $book = Book::find($id);
 
+        //if book is found, send appropriate json response
         if($book){
             $jsonRes = array(
                 "status_code" => 200,
@@ -395,6 +400,7 @@ class BookController extends Controller
             return response()->json($jsonRes, 200);
         }
 
+        //If book is not found, send appropriate json response
         $jsonRes = array(
             "status_code" => 200,
             "status" => "success",
