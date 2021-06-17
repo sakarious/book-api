@@ -84,17 +84,17 @@ $ php artisan test
 
 ## Endpoints
 
-`GET: api/external-books?name=a game of thrones` - Calls an external API service to get information about book where name is a query parametwer for name of book.
-`GET: /v1/books` - Get all Books.
-`GET: /v1/books?name=Sakarious` - Search for book by name where name is a query parameter for name of book.
-`GET: /v1/books?country=Nigeria` - Search for book by country where country is a query parameter for country of book.
-`GET: /v1/books?publisher=Da Genius` - Search for book by publisher where publisher is a query parameter for publisher of book.
-`GET: /v1/books?release_year=2020` - Search for book by release year where release_year is a query parameter for year of book.
-`GET: /v1/books/{id}` - Get a book where Book ID is {id}.
-`POST: /v1/books` - Create a Book.
-`PATCH: /v1/books/{id}` - Update a book where ID if book to be updated is {id}.
-`Delete: /v1/books/{id}` - Delete a book where Book ID is {id}.
-`POST: /v1/books/{id}/delete` - Delete a book where Book ID is {id}.
+-   `GET: api/external-books?name=a game of thrones` - Calls an external API service to get information about book where name is a query parametwer for name of book.
+-   `GET: /v1/books` - Get all Books.
+-   `GET: /v1/books?name=Sakarious` - Search for book by name where name is a query parameter for name of book.
+-   `GET: /v1/books?country=Nigeria` - Search for book by country where country is a query parameter for country of book.
+-   `GET: /v1/books?publisher=Da Genius` - Search for book by publisher where publisher is a query parameter for publisher of book.
+-   `GET: /v1/books?release_year=2020` - Search for book by release year where release_year is a query parameter for year of book.
+-   `GET: /v1/books/{id}` - Get a book where Book ID is {id}.
+-   `POST: /v1/books` - Create a Book.
+-   `PATCH: /v1/books/{id}` - Update a book where ID if book to be updated is {id}.
+-   `Delete: /v1/books/{id}` - Delete a book where Book ID is {id}.
+-   `POST: /v1/books/{id}/delete` - Delete a book where Book ID is {id}.
 
 ## Resources
 
