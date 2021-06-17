@@ -16,10 +16,12 @@ class BookController extends Controller
             'name' => "required"
         ];
 
+        //Check validation and use a custom message
         $validator = Validator::make($request->query(), $rules, $messages = [
             'required' =>'The :attribute query parameter field is required'
         ]);
 
+        //If validation fails, Send appropriate json response
         if($validator->fails()){
             $jsonRes = [
                 "message" => "Validation Failed",
@@ -28,10 +30,13 @@ class BookController extends Controller
             return response()->json($jsonRes, 200);
         }
         
+        //If validation passes, assign name from query parameter to variable name
         $name = $request->query('name');
 
+        //Set name and use external service
         $response = Http::get("https://www.anapioficeandfire.com/api/books?name={$name}");
 
+        //Check if book was not found and send appropriate json response
         if($response ==  "[]"){
             $jsonRes = [
                 "status_code" => 200,
@@ -41,6 +46,7 @@ class BookController extends Controller
             return response()->json($jsonRes, 200);
         }
 
+        //If book was found, Get required fields and send json response
         $jsonRes = array(
             "status_code" => 200,
             "status" => "success",
@@ -80,8 +86,10 @@ class BookController extends Controller
             'release_date' => "required",
         ];
 
+        //Run validation
         $validator = Validator::make($request->all(), $rules);
 
+        //If validation fails, Send appropriate json response
         if($validator->fails()){
             $jsonRes = [
                 "message" => "Validation Failed",
@@ -90,6 +98,7 @@ class BookController extends Controller
             return response()->json($jsonRes, 200);
         }
 
+        //If validation passes, assign fields from input to variables
         $name = $request->input('name');
         $isbn = $request->input('isbn');
         $authors = $request->input('authors');
@@ -99,6 +108,7 @@ class BookController extends Controller
         $publisher = $request->input('publisher');
         $release_date = $request->input('release_date');
 
+        //Create new Book in the database
         Book::create([
             'name' => $name,
             'isbn' => $isbn,
@@ -109,6 +119,7 @@ class BookController extends Controller
             'release_date' => $release_date
         ]);
 
+        //Send appropriate json response and status code
         $jsonRes = array(
             "status_code" => 201,
             "status" => "success",
@@ -132,9 +143,14 @@ class BookController extends Controller
 
     function read(Request $request){
         //SEARCH BY NAME
+        
+        //if name is present in query parameter
         if($request->query('name')){
+            //Assign name from query parameter to variable
             $name = $request->query('name');
+            //Search for book in database  where name is the name given
             $books = Book::where("name", $name)->get();
+            //if book was not found and send appropriate json response
             if ($books == '[]'){
                 $jsonRes = array(
                     "status_code" => 200,
@@ -143,7 +159,7 @@ class BookController extends Controller
                 );
                 return response()->json($jsonRes, 200);
             }
-    
+            //if book was found, send json response
             $jsonRes = array(
                 "status_code" => 200,
                 "status" => "success",
