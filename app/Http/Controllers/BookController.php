@@ -170,9 +170,14 @@ class BookController extends Controller
 
 
         //SEARCH BY COUNTRY
+
+        //if country is present in query parameter
         if($request->query('country')){
+            //Assign country from query parameter to variable
             $country = $request->query('country');
+            //Search for book in database  where country is the country given
             $books = Book::where("country", $country)->get();
+            //if book was not found and send appropriate json response
             if ($books == '[]'){
                 $jsonRes = array(
                     "status_code" => 200,
@@ -182,6 +187,7 @@ class BookController extends Controller
                 return response()->json($jsonRes, 200);
             }
     
+            //if book was found, send json response
             $jsonRes = array(
                 "status_code" => 200,
                 "status" => "success",
@@ -191,9 +197,14 @@ class BookController extends Controller
         }
 
          //SEARCH BY PUBLISHER
+
+         //if publisher is present in query parameter
          if($request->query('publisher')){
+             //Assign publisher from query parameter to variable
             $publisher = $request->query('publisher');
+            //Search for book in database  where publisher is the publisher given
             $books = Book::where("publisher", $publisher)->get();
+            //if book was not found and send appropriate json response
             if ($books == '[]'){
                 $jsonRes = array(
                     "status_code" => 200,
@@ -203,6 +214,7 @@ class BookController extends Controller
                 return response()->json($jsonRes, 200);
             }
     
+            //if book was found, send json response
             $jsonRes = array(
                 "status_code" => 200,
                 "status" => "success",
@@ -212,11 +224,16 @@ class BookController extends Controller
         }
 
         //SEARCH BY RELEASE YEAR
+
+        //if year is present in query parameter
         if($request->query('release_year')){
+            //Assign year from query parameter to variable
             $releaseYear = $request->query('release_year');
             //Cast $releaseYear to integer
             $intYear = (int)$releaseYear;
+            //Search for book in database  where year is the year given
             $books = Book::whereYear('release_date', '=', $intYear)->get();
+            //if book was not found and send appropriate json response
             if ($books == '[]'){
                 $jsonRes = array(
                     "status_code" => 200,
@@ -226,6 +243,7 @@ class BookController extends Controller
                 return response()->json($jsonRes, 200);
             }
     
+            //if book was found, send json response
             $jsonRes = array(
                 "status_code" => 200,
                 "status" => "success",
@@ -234,7 +252,9 @@ class BookController extends Controller
             return response()->json($jsonRes, 200);
         }
 
+        //If none of the query parameters to be searched by are found, Return all books in database
         $books = Book::all();
+        //if no book present, send appropriate json response
         if ($books == '[]'){
             $jsonRes = array(
                 "status_code" => 200,
@@ -243,7 +263,7 @@ class BookController extends Controller
             );
             return response()->json($jsonRes, 200);
         }
-
+        //if book found, send json response
         $jsonRes = array(
             "status_code" => 200,
             "status" => "success",
