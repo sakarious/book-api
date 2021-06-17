@@ -583,4 +583,58 @@ class BookTest extends TestCase
             "data" => []
             ]);
     }
+
+     /**
+     * Show Book Test.
+     *
+     * 
+     */
+     public function test_can_find_book_by_id()
+     {
+        $book1 = new Book();
+        $book1->name = "Sakarious";
+        $book1->isbn = "123-3231";
+        $book1->authors = "Da Genius";
+        $book1->country = "Nigeria";
+        $book1->number_of_pages = "102";
+        $book1->publisher = "Da Genius";
+        $book1->release_date = "2019-01-01";
+        $book1->save();
+        
+        $response = $this->json('GET', '/api/v1/books/1');
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            "status_code" => 200,
+            "status" => "success",
+            "data" => [
+                "id" => 1,
+                "name" => "Sakarious",
+                "isbn" => "123-3231",
+                "authors" => "Da Genius",
+                "country" => "Nigeria",
+                "number_of_pages" => "102",
+                "publisher" => "Da Genius",
+                "release_date" => "2019-01-01"
+            ]
+            ]);
+     }
+
+     /**
+     * Show Book Test.
+     *
+     * 
+     */
+    public function test_cannot_find_book_if_book_isnt_present()
+    {
+        $response = $this->json('GET', '/api/v1/books/11');
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            "status_code" => 200,
+            "status" => "success",
+            "message" => "Book not Found",
+            "data" => []
+            ]);
+    }
 }
