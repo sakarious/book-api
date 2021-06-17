@@ -141,6 +141,7 @@ class BookController extends Controller
 
     }
 
+    //READ BOOK
     function read(Request $request){
         //SEARCH BY NAME
         
@@ -272,6 +273,7 @@ class BookController extends Controller
         return response()->json($jsonRes, 200);
     }
 
+    //UPDATE BOOK
     function update(Request $request, $id){
         // name
         // isbn
@@ -281,6 +283,7 @@ class BookController extends Controller
         // publisher
         // release_date
 
+        //Set Validation rules
         $rules = [
             'name' => "required",
             'isbn' => "required",
@@ -291,8 +294,10 @@ class BookController extends Controller
             'release_date' => "required",
         ];
 
+        //Run validation
         $validator = Validator::make($request->all(), $rules);
 
+        //if validation fails, send appropriate json response
         if($validator->fails()){
             $jsonRes = [
                 "message" => "Validation Failed",
@@ -301,6 +306,7 @@ class BookController extends Controller
             return response()->json($jsonRes, 200);
         }
 
+        //If validation passes, assign input fields to variables
         $name = $request->input('name');
         $isbn = $request->input('isbn');
         $authors = $request->input('authors');
@@ -310,8 +316,10 @@ class BookController extends Controller
         $publisher = $request->input('publisher');
         $release_date = $request->input('release_date');
 
+        //Find book by id in the db
         $checkBook = Book::find($id);
         
+        //if book is found update book and send json response
         if ($checkBook){
                 $checkBook->name = $name;
                 $checkBook->isbn = $isbn;
@@ -336,6 +344,7 @@ class BookController extends Controller
                 }
         }
 
+        //if book is not found, send appropriate response
         $jsonRes = array(
             "status_code" => 200,
             "status" => "success",
@@ -345,7 +354,9 @@ class BookController extends Controller
         return response()->json($jsonRes, 200);
     }
 
+    //DELETE BOOK
     function delete($id){
+
         $checkBook = Book::find($id);
 
         if ($checkBook){
